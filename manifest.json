@@ -3,9 +3,6 @@
     "version": "0.0.1",
     "manifest_version": 3,
     "description": "grep contents in the side panel.",
-    "background": {
-        "service_worker": "service_worker.js"
-    },
     "side_panel": {
         "default_path": "sidepanel.html"
     },
