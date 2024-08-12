@@ -156,7 +156,7 @@ export default {
     });
 
 
-    handleInput();
+    this.handleInput();
   },
   mounted() {
     this.$refs.inputElement.focus();
@@ -164,12 +164,17 @@ export default {
   watch: {
     showDetails(newValue) {
       chrome.storage.local.set({ showDetails: newValue });
+      if(newValue === true){
+        this.handleInput();
+      }
     },
     searchScope(newValue) {
       chrome.storage.local.set({ searchScope: newValue });
+      this.handleInput();
     },
     searchContent(newValue) {
       chrome.storage.local.set({ searchContent: newValue });
+      this.handleInput();
     }
   },
 };
