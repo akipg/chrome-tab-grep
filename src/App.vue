@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>grep</h1>
-    <hr />
+    <!-- <h1>grep</h1> -->
+    <!-- <hr /> -->
     <div class="search-container">
       <label for="searchContent">Search </label>
       <select v-model="searchContent" disabled>
@@ -19,7 +19,7 @@
       <input type="checkbox" v-model="showDetails">
       <label for="showdetails"> Show details</label>
     </div>
-    <input type="text" id="input" v-model="inputValue" @input="handleInput">
+    <input type="text" id="input" v-model="inputValue" @input="handleInput" placeholder="search text...">
     <div>
       <div id="result">
         <div v-for="(result, index) in results" :key="index">
@@ -220,7 +220,8 @@ input[type="checkbox"] {
 }
 
 input[type="text"], select {
-  width: calc(100% - 40px);
+  /* width: calc(100% - 40px); */
+  width: fit-content;
   padding: 10px;
   margin: 20px;
   border: 1px solid var(--border-color);
