@@ -1,0 +1,22 @@
+{
+    "name": "chrome-grep",
+    "version": "0.0.1",
+    "manifest_version": 3,
+    "description": "grep contents in the side panel.",
+    "background": {
+        "service_worker": "service_worker.js"
+    },
+    "side_panel": {
+        "default_path": "sidepanel.html"
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://*/*", "http://*/*", "file:///"],
+            "js": ["content_scripts.js"],
+            "all_frames": false,
+            "run_at": "document_idle",
+            "world": "ISOLATED"
+        }
+    ],
+    "permissions": ["sidePanel", "contextMenus", "storage", "tabs"]
+}
