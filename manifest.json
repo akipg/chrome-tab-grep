@@ -41,5 +41,5 @@
             }
         }
     },
-    "permissions": ["sidePanel", "storage", "tabs"]
+    "permissions": ["sidePanel", "storage"]
 }
