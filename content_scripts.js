@@ -12,20 +12,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         gResult = [];
 
         function searchTextInPage(searchTerm) {
-            // Function to traverse the DOM and find text nodes
-            function getTextNodes(node) {
-                let textNodes = [];
-                if (node.nodeType === Node.TEXT_NODE) {
-                    textNodes.push(node);
-                } else {
-                    for (let child of node.childNodes) {
-                        textNodes = textNodes.concat(getTextNodes(child));
-                    }
-                }
-                return textNodes;
-            }
-
-
             gResult = [];
             function textNodesUnder(el, searchRegExp) {
                 const children = []; // Type: Node[]
@@ -63,26 +49,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 }
                 return children;
             }
-
-            // Function to check if the text node contains the search term
-            function textContainsSearchTerm(node, searchTerm) {
-                const regex = new RegExp(searchTerm, 'gi');
-                return regex.test(node.textContent);
-            }
-
-            // Get all text nodes in the body
-            // const textNodes = getTextNodes(document.body);
-            // const textNodes = textNodesUnder(document.body);
-            // console.log("textNodes", typeof(textNodes), textNodes)
-
-            // // Search for the text
-            // nodes = [];
-            // for (let node of textNodes) {
-            //     console.log("node", node)
-            //     if (textContainsSearchTerm(node, searchTerm)) {
-            //         nodes.push(node.textContent);
-            //     }
-            // }
 
             const searchRegExp = new RegExp(searchTerm, 'gi');
             const foundNodes = textNodesUnder(document.body, searchRegExp);
