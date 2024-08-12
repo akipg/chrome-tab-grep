@@ -241,7 +241,7 @@ hr {
 }
 
 p {
-  margin: 20px;
+  margin: 0px;
 }
 
 label {
@@ -302,7 +302,7 @@ button:hover {
 
 #result ul {
   list-style-type: none;
-  padding: 0;
+  padding-left: 10px;
 }
 
 #result li {
