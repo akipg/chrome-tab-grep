@@ -1,5 +1,5 @@
 {
-    "name": "chrome-tab-grep (beta)",
+    "name": "tab grep (beta)",
     "version": "0.0.1",
     "manifest_version": 3,
     "description": "grep contents in the side panel.",
