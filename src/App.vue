@@ -2,24 +2,23 @@
   <div>
     <h1>grep</h1>
     <hr />
-    <p>      
+    <div class="search-container">
       <label for="searchContent">Search </label>
       <select v-model="searchContent" disabled>
-        <option value="all" >All</option>
-        <option value="content" >Content</option>
+        <option value="all">All</option>
+        <option value="content">Content</option>
         <option value="title">Title</option>
         <option value="url">URL</option>
       </select>
       <label for="searchScope"> in </label>
       <select v-model="searchScope">
-        <option value="all" >All Tabs</option>
+        <option value="all">All Tabs</option>
         <option value="currentWindow">Current Window</option>
         <option value="currentTab">Current Tab</option>
       </select>
-
       <input type="checkbox" v-model="showDetails">
-      <label for="showdetails"> Show details</label><br/>
-    </p>
+      <label for="showdetails"> Show details</label>
+    </div>
     <input type="text" id="input" v-model="inputValue" @input="handleInput">
     <div>
       <div id="result">
@@ -286,5 +285,11 @@ img.favicon {
   height: 1em;
   vertical-align: middle;
   margin: 0px 5px;
+}
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  margin: 20px;
 }
 </style>
