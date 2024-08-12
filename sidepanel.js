@@ -74,6 +74,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       p.appendChild(favicon);
       p.appendChild(tabTitle);
       div.appendChild(p);
+
+      p.onclick = ((tabId) => () => {
+        chrome.tabs.update(tabId, { active: true });
+      })(sender.tab.id);
     }
     
     {
