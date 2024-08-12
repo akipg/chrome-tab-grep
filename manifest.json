@@ -1,5 +1,5 @@
 {
-    "name": "chrome-tab-grep",
+    "name": "chrome-tab-grep (beta)",
     "version": "0.0.1",
     "manifest_version": 3,
     "description": "grep contents in the side panel.",
@@ -41,5 +41,5 @@
             }
         }
     },
-    "permissions": ["sidePanel", "contextMenus", "storage", "tabs"]
+    "permissions": ["sidePanel", "storage", "tabs"]
 }
