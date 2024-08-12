@@ -2,24 +2,26 @@
   <div>
     <!-- <h1>grep</h1> -->
     <!-- <hr /> -->
-    <div class="search-container">
-      <label for="searchContent">Search </label>
-      <select v-model="searchContent" disabled>
-        <option value="all">All</option>
-        <option value="content">Content</option>
-        <option value="title">Title</option>
-        <option value="url">URL</option>
-      </select>
-      <label for="searchScope"> in </label>
-      <select v-model="searchScope">
-        <option value="all">All Tabs</option>
-        <option value="currentWindow">Current Window</option>
-        <option value="currentTab">Current Tab</option>
-      </select>
-      <input type="checkbox" v-model="showDetails">
-      <label for="showdetails"> Show details</label>
+    <div class="sticky-header">
+      <div class="search-container">
+        <label for="searchContent">Search </label>
+        <select v-model="searchContent" disabled>
+          <option value="all">All</option>
+          <option value="content">Content</option>
+          <option value="title">Title</option>
+          <option value="url">URL</option>
+        </select>
+        <label for="searchScope"> in </label>
+        <select v-model="searchScope">
+          <option value="all">All Tabs</option>
+          <option value="currentWindow">Current Window</option>
+          <option value="currentTab">Current Tab</option>
+        </select>
+        <input type="checkbox" v-model="showDetails">
+        <label for="showdetails"> Show details</label>
+      </div>
+      <input type="text" id="input" ref="inputElement" v-model="inputValue" @input="handleInput" placeholder="search text...">
     </div>
-    <input type="text" id="input" ref="inputElement" v-model="inputValue" @input="handleInput" placeholder="search text...">
     <div>
       <div id="result">
         <div v-for="(result, index) in results" :key="index">
@@ -331,5 +333,12 @@ img.favicon {
   align-items: center;
   gap: 0px;
   margin: 20px;
+}
+.sticky-header {
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--background-color);
 }
 </style>
