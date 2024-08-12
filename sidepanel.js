@@ -1,4 +1,26 @@
-document.querySelector("#input").addEventListener("input", async function () {
+// Debounce function
+function debounce(func, wait) {
+  let timeout;
+  let block = false;
+  return function(...args) {
+    if(block){
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        block = false;
+        func.apply(this, args);
+      }, wait);
+    }
+    else {
+      clearTimeout(timeout);
+      func.apply(this, args);
+      block = true;
+    }
+    
+  };
+}
+
+document.querySelector("#input").addEventListener("input", debounce(async function () {
+
   console.warn("[Panel] input event fired");
   chrome.storage.local.set({ input: this.value });
   const inputValue = this.value;
@@ -17,7 +39,7 @@ document.querySelector("#input").addEventListener("input", async function () {
         console.error("[Panel] Error sending message to content script:", error, tab.title);
       });
   }
-});
+}, 50));
 
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
