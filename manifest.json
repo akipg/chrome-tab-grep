@@ -6,6 +6,18 @@
     "side_panel": {
         "default_path": "index.html"
     },
+    "action": {
+        "default_popup": "index.html"
+    },
+    "background": {
+        "service_worker": "static/background.js",
+        "type": "module"
+    },
+    "icons": {
+        "16": "static/icon/icon16.png",
+        "48": "static/icon/icon48.png",
+        "128": "static/icon/icon128.png"
+    },
     "content_scripts": [
         {
             "matches": ["https://*/*", "http://*/*", "file:///"],
@@ -15,5 +27,19 @@
             "world": "ISOLATED"
         }
     ],
+    "commands": {
+        "_execute_action": {
+            "description" : "Open popup",
+            "suggested_key": {
+                "default": "Alt+G"
+              }
+        },
+        "open_side_panel": {
+            "description": "Open side panel",
+            "suggested_key": {
+                "default": "Alt+Shift+G"
+            }
+        }
+    },
     "permissions": ["sidePanel", "contextMenus", "storage", "tabs"]
 }
