@@ -19,7 +19,7 @@
       <input type="checkbox" v-model="showDetails">
       <label for="showdetails"> Show details</label>
     </div>
-    <input type="text" id="input" v-model="inputValue" @input="handleInput" placeholder="search text...">
+    <input type="text" id="input" ref="inputElement" v-model="inputValue" @input="handleInput" placeholder="search text...">
     <div>
       <div id="result">
         <div v-for="(result, index) in results" :key="index">
@@ -75,11 +75,13 @@ export default {
   methods: {
     handleInput: debounce(async function () {
       if (DEBUG_WARN) console.warn("[Panel] input event fired");
+
+      chrome.storage.local.set({ input: this.inputValue });
+
       if(this.inputValue.trim() === "") {
         this.results = [];
         return;
       }
-      chrome.storage.local.set({ input: this.inputValue });
     
       let tabs;
       if(this.searchScope === "all") {
@@ -137,7 +139,39 @@ export default {
         this.results.push({ message, sender });
       }
     });
-  }
+
+    chrome.storage.local.get(['showDetails', 'searchScope', 'searchContent', 'input'], (result) => {
+      if(result.input) {
+        this.inputValue = result.input;
+      }
+      if(result.showDetails) {
+        this.showDetails = result.showDetails;
+      }
+      if(result.searchScope) {
+        this.searchScope = result.searchScope;
+      }
+      if(result.searchContent) {
+        this.searchContent = result.searchContent;
+      }
+    });
+
+
+    handleInput();
+  },
+  mounted() {
+    this.$refs.inputElement.focus();
+  },
+  watch: {
+    showDetails(newValue) {
+      chrome.storage.local.set({ showDetails: newValue });
+    },
+    searchScope(newValue) {
+      chrome.storage.local.set({ searchScope: newValue });
+    },
+    searchContent(newValue) {
+      chrome.storage.local.set({ searchContent: newValue });
+    }
+  },
 };
 </script>
 
