@@ -27,6 +27,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     // Handle the message as needed
 
     let div = document.createElement("div");
+    document.querySelector("#result").appendChild(div);
     const result = message.result;
     // div.innerHTML = `<code><pre>${JSON.stringify(sender, null, 2)}</pre></code>`
     // div.innerHTML = `<code><pre>${JSON.stringify(message, null, 2)}</pre></code>`
@@ -43,30 +44,35 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       p.appendChild(favicon);
       p.appendChild(tabTitle);
       div.appendChild(p);
-
-      let ul = document.createElement("ul");
-      let matchIdx = 0;
-      for(const r of result){
-        let li = document.createElement("li");
-        const before = r.text.substring(0, r.index);
-        const match = r.text.substring(r.index, r.index + r.length);
-        const after = r.text.substring(r.index + r.length);
-        li.innerHTML = `${before}<mark>${match}</mark>${after}`;
-        function scrollToElement(tabId, matchIdx){
-          chrome.tabs.sendMessage(tabId, { type: "scrollToElement", matchIdx});
-        }
-        li.onclick = ((tabId, matchIdx) => () => {
-          console.log("clicked", tabId, matchIdx);
-          chrome.tabs.sendMessage(tabId, { type: "scrollToElement", matchIdx});
-        })(sender.tab.id, matchIdx);
-        ul.appendChild(li);
-
-        matchIdx++;
-      }
-      div.appendChild(ul);
     }
+    
+    {
+      if(document.querySelector("#showdetails").checked){
+        let ul = document.createElement("ul");
+        let matchIdx = 0;
+        for(const r of result){
+          let li = document.createElement("li");
+          const before = r.text.substring(0, r.index);
+          const match = r.text.substring(r.index, r.index + r.length);
+          const after = r.text.substring(r.index + r.length);
+          li.innerHTML = `${before}<mark>${match}</mark>${after}`;
+          function scrollToElement(tabId, matchIdx){
+            chrome.tabs.sendMessage(tabId, { type: "scrollToElement", matchIdx});
+          }
+          li.onclick = ((tabId, matchIdx) => () => {
+            console.log("clicked", tabId, matchIdx);
+            chrome.tabs.update(tabId, { active: true }); 
+            chrome.tabs.sendMessage(tabId, { type: "scrollToElement", matchIdx});
+          })(sender.tab.id, matchIdx);
+          ul.appendChild(li);
 
-    document.querySelector("#result").appendChild(div);
+          matchIdx++;
+        }
+        div.appendChild(ul);
+      }
+    }
+  
+
   }
 
 });
