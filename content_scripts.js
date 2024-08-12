@@ -10,6 +10,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // Handle the message as needed
         
         gResult = [];
+        const showDetails = message.showDetails;
 
         function searchTextInPage(searchTerm) {
             gResult = [];
@@ -17,6 +18,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 const children = []; // Type: Node[]
                 const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
                     acceptNode: function (node) {
+                        if(!showDetails) {
+                            if(gResult.length > 0) {
+                                return NodeFilter.FILTER_REJECT;
+                            }
+                        }
+
                         // Skip text nodes that are children of <style> elements
                         if (node.parentNode && (
                             node.parentNode.nodeName.toLowerCase() === 'style'

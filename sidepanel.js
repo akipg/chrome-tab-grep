@@ -1,3 +1,5 @@
+var DEBUG_WARN = false;
+
 // Debounce function
 function debounce(func, wait) {
   let timeout;
@@ -20,20 +22,20 @@ function debounce(func, wait) {
 }
 
 document.querySelector("#input").addEventListener("input", debounce(async function () {
-
-  console.warn("[Panel] input event fired");
+  if(DEBUG_WARN) console.warn("[Panel] input event fired");
   chrome.storage.local.set({ input: this.value });
+  const showDetails = document.querySelector("#showdetails").checked;
   const inputValue = this.value;
-  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-  // const tabs = await chrome.tabs.query({});
+  // const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+  const tabs = await chrome.tabs.query({});
   document.querySelector("#result").innerHTML = "";
   for(const tab of tabs){
-    console.warn("[Panel] Sending message to content script:", tab.id, tab.windowId, tab.index, tab.title);
-    const ret = chrome.tabs.sendMessage(tab.id, { type: "inputChanged", value: inputValue });
-    console.warn(ret, tab)
+    if(DEBUG_WARN) console.warn("[Panel] Sending message to content script:", tab.id, tab.windowId, tab.index, tab.title);
+    const ret = chrome.tabs.sendMessage(tab.id, { type: "inputChanged", value: inputValue, showDetails });
+    if(DEBUG_WARN) console.warn(ret, tab);
     ret
       .then((response) => {
-        console.warn("[Panel] Message sent to content script:", response);
+        if(DEBUG_WARN) console.warn("[Panel] Message sent to content script:", response);
       })
       .catch((error) => {
         console.error("[Panel] Error sending message to content script:", error, tab.title);
@@ -43,10 +45,16 @@ document.querySelector("#input").addEventListener("input", debounce(async functi
 
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.warn("[Panel] Message received:", message);
+  if(DEBUG_WARN) console.warn("[Panel] Message received:", message);
   if (message.type === "searchResult") {
-    console.warn("Result", message.result, "sender", sender);
+    if(DEBUG_WARN) console.warn("Result", message.result, "sender", sender);
     // Handle the message as needed
+
+    if(message.result.length === 0){
+      return;
+    }
+
+    const showDetails = document.querySelector("#showdetails").checked;
 
     let div = document.createElement("div");
     document.querySelector("#result").appendChild(div);
@@ -69,7 +77,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
     
     {
-      if(document.querySelector("#showdetails").checked){
+      if(showDetails){
         let ul = document.createElement("ul");
         let matchIdx = 0;
         for(const r of result){
