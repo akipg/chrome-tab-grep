@@ -61,6 +61,10 @@ export default {
   methods: {
     handleInput: debounce(async function () {
       if (DEBUG_WARN) console.warn("[Panel] input event fired");
+      if(this.inputValue.trim() === "") {
+        this.results = [];
+        return;
+      }
       chrome.storage.local.set({ input: this.inputValue });
       const tabs = await chrome.tabs.query({});
       this.results = [];
